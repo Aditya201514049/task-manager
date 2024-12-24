@@ -50,7 +50,7 @@ const App = () => {
             <>
               <Route
                 path="/login"
-                element={<LoginForm setIsLoggedIn={setIsLoggedIn} />}
+                element={<LoginForm setIsLoggedIn={setIsLoggedIn} setUser={setUser} />}
               />
               <Route
                 path="/register"

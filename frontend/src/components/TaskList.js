@@ -48,28 +48,6 @@ const TaskList = ({ refresh }) => {
   }, [refresh]); // Trigger re-fetch whenever `refresh` prop changes
 
 
-/*
-const fetchTasks = async () => {
-  setLoading(true);
-  setError(""); // Reset any previous errors
-  const token = localStorage.getItem("authToken"); // Ensure correct token retrieval
-  try {
-    const response = await axios.get("http://localhost:5000/api/tasks", {
-      headers: { Authorization: `Bearer ${token}` }, // Pass the token in headers
-    });
-    setTasks(response.data); // Update the state with fetched tasks
-  } catch (error) {
-    setError("Error fetching tasks. Please try again.");
-    console.error("Error fetching tasks:", error);
-  } finally {
-    setLoading(false); // Ensure loading is stopped after fetch
-  }
-};
-useEffect(() => {
-  fetchTasks();
-}, []); // Empty dependency array ensures this runs only once on mount
-*/
-
   const handleDelete = async (taskId) => {
     try {
       await deleteTask(taskId); // Call delete function from taskService

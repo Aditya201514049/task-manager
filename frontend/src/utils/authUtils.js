@@ -12,14 +12,13 @@ export const loginUser = async (email, password) => {
         // Check if the token is provided in the response
         if (response.data?.token) {
             const token = response.data.token;
-            console.log('token',token);
+            
             
 
             // Save token in localStorage
             localStorage.setItem('authToken', token);
 
-             // Log to confirm token is saved
-             console.log("Token saved to localStorage:", localStorage.getItem('authToken'));
+             
 
             // Fetch user details using the token
             try {

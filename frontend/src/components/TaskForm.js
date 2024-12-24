@@ -18,14 +18,11 @@ const TaskForm = ({ task, onSave, user,token }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-console.log('4545464', token);
-
    // Log user when it changes
    useEffect(() => {
     console.log('Received user in TaskForm:', user);
   }, [user]);
 
- 
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -93,15 +90,6 @@ console.log('4545464', token);
       onSubmit={handleSubmit}
       className='bg-slate-100 shadow-xl rounded-lg p-6 max-w-lg mx-auto'
     >
-      {user && user.name ? (
-        <div className="mb-4 flex justify-between items-center">
-          <span className="font-bold text-gray-700">Hello, {user.email}</span>
-        </div>
-      ) : (
-        <div className="mb-4 flex justify-between items-center">
-          <span className="font-bold text-gray-700">Hello</span>
-        </div>
-      )}
 
       <h2 className="text-xl font-bold mb-4">
         {task ? 'Edit Task' : 'Create New Task'}
