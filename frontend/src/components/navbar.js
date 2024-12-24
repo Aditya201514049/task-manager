@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = ({ isLoggedIn, handleLogout, user }) => {
@@ -8,10 +8,6 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
   const toggleUserDetails = () => {
     setShowUserDetails((prevState) => !prevState);
   };
-
-  useEffect(() => {
-    console.log("Received user in Navbar:", user);
-  }, [user]);
 
   return (
     <nav className="bg-blue-500 p-4">
