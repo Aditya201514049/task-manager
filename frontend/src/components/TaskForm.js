@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const TaskForm = ({ task, onSave, user }) => {
+const TaskForm = ({ task, onSave, user,token }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('');
@@ -18,14 +18,17 @@ const TaskForm = ({ task, onSave, user }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+console.log('4545464', token);
 
    // Log user when it changes
    useEffect(() => {
     console.log('Received user in TaskForm:', user);
   }, [user]);
 
+ 
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     console.log("Token in TaskForm:", token);
   }, []);
 

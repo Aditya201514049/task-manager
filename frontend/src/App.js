@@ -11,13 +11,13 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
   const [user, setUser] = useState(null); // Store logged-in user data
   const [taskListKey, setTaskListKey] = useState(0); // Key to force TaskList re-render
-  const [token, setToken] = useState(localStorage.getItem("authToken"));
+  const [token, setToken] = useState('');
 
   // Update the token when localStorage changes
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
     setToken(storedToken);
-  }, []);
+  }, [isLoggedIn]);
 
   // Refresh the task list when a task is added
   const handleSave = () => {
@@ -31,13 +31,7 @@ const App = () => {
     localStorage.removeItem("authToken"); // Clear token (if stored)
   };
 
-    // Handle successful login
-    const handleLogin = (loggedInUser, token) => {
-      setIsLoggedIn(true); // Set login state to true
-      setUser(loggedInUser); // Set user data
-      localStorage.setItem("authToken", token); // Store token (if needed)
-    };
-
+   
   return (
     <Router>
       <div>
@@ -48,7 +42,7 @@ const App = () => {
         <Routes>
           {isLoggedIn ? (
             <>
-              <Route path="/" element={<TaskForm onSave={handleSave} user={user} />} />
+              <Route path="/" element={<TaskForm onSave={handleSave} user={user}  token={token}  />} />
               <Route path="/tasks" element={<TaskList key={taskListKey} user={user} token={token} />} />
               <Route path="*" element={<Navigate to="/" />} />
             </>
@@ -56,7 +50,7 @@ const App = () => {
             <>
               <Route
                 path="/login"
-                element={<LoginForm setIsLoggedIn={handleLogin} setUser={setUser}/>}
+                element={<LoginForm setIsLoggedIn={setIsLoggedIn} />}
               />
               <Route
                 path="/register"

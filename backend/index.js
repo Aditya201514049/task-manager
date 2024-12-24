@@ -39,9 +39,16 @@ app.get('/',(req, res)=>{
 } );
 
 // connect to MongoDB
-mongoose.connect(config.MONGO_URI)
-.then(() => console.log("Connected to MongoDB"))
-.catch(err => console.error(err));
+mongoose.connect(config.MONGO_URI, {
+    useNewUrlParser: true, // Parses connection string
+    useUnifiedTopology: true, // Enables the new Server Discover and Monitoring engine
+    serverSelectionTimeoutMS: 10000, // Wait up to 10 seconds for server selection
+})
+    .then(() => console.log("Connected to MongoDB"))
+    .catch(err => {
+        console.error("MongoDB connection error:", err.message);
+        process.exit(1); // Exit process if connection fails
+    });
 
 // Start the server
 const PORT = config.PORT || 5000;

@@ -19,9 +19,13 @@ const LoginForm = ({ setIsLoggedIn }) => {
     try {
       const userData = await loginUser(email, password); // Utility function
       if (userData) {
+        const token=localStorage.getItem('authToken')
+        console.log('666666666666666666', token);
+        
         setIsLoggedIn(true); // Update parent state
         navigate('/'); // Redirect to TaskForm page
       }
+      
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {
