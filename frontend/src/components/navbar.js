@@ -36,7 +36,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
               onClick={toggleUserDetails}
               className="text-white hover:text-gray-300 font-medium"
             >
-              Hello, {user ? user.name : "Guest"}
+             {user ? user.name : "Guest"}
             </button>
             <button
               onClick={handleLogout}
