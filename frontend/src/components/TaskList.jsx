@@ -156,7 +156,7 @@ const TaskList = ({ refresh }) => {
           onClick={toggleSortOrder}
           className="btn btn-primary"
         >
-          Sort by Priority ({sortOrder === "low-to-high" ? "Low to High" : "High to Low"})
+          Priority ({sortOrder === "low-to-high" ? "Low to High" : "High to Low"})
         </button>
       </div>
 
