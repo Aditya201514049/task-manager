@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -26,6 +27,11 @@
 
 .App-link {
   color: #61dafb;
+}
+
+/* Add padding-top to prevent content from being hidden behind the navbar */
+body {
+  padding-top: 4rem; /* Adjust this value based on your navbar height */
 }
 
 @keyframes App-logo-spin {

@@ -11,7 +11,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
   const [user, setUser] = useState(null); // Store logged-in user data
   const [taskListKey, setTaskListKey] = useState(0); // Key to force TaskList re-render
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState("");
 
   // Update the token when localStorage changes
   useEffect(() => {
@@ -31,42 +31,41 @@ const App = () => {
     localStorage.removeItem("authToken"); // Clear token (if stored)
   };
 
-   
   return (
     <Router>
-      <div>
-        
+      <div className="bg-gray-100 min-h-screen">
         <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} user={user} />
-
         
-        <Routes>
-          {isLoggedIn ? (
-            <>
-              <Route path="/" element={<TaskForm onSave={handleSave} user={user}  token={token}  />} />
-              <Route path="/tasks" element={<TaskList key={taskListKey} user={user} token={token} />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </>
-          ) : (
-            <>
-              <Route
-                path="/login"
-                element={<LoginForm setIsLoggedIn={setIsLoggedIn} setUser={setUser} />}
-              />
-              <Route
-                path="/register"
-                element={
-                  <RegisterForm
-                    onRegisterSuccess={() => {
-                      alert("Registration successful! Please log in.");
-                      window.location.href = "/login"; // Redirect to login
-                    }}
-                  />
-                }
-              />
-              <Route path="*" element={<Navigate to="/login" />} />
-            </>
-          )}
-        </Routes>
+        <div className="pt-16">
+          <Routes>
+            {isLoggedIn ? (
+              <>
+                <Route path="/" element={<TaskForm onSave={handleSave} user={user} token={token} />} />
+                <Route path="/tasks" element={<TaskList key={taskListKey} user={user} token={token} />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </>
+            ) : (
+              <>
+                <Route
+                  path="/login"
+                  element={<LoginForm setIsLoggedIn={setIsLoggedIn} setUser={setUser} />}
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <RegisterForm
+                      onRegisterSuccess={() => {
+                        alert("Registration successful! Please log in.");
+                        window.location.href = "/login"; // Redirect to login
+                      }}
+                    />
+                  }
+                />
+                <Route path="*" element={<Navigate to="/login" />} />
+              </>
+            )}
+          </Routes>
+        </div>
       </div>
     </Router>
   );
