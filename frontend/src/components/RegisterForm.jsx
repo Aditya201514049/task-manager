@@ -1,6 +1,7 @@
 
 
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
@@ -97,12 +98,12 @@ const RegisterForm = ({ onRegisterSuccess }) => {
       </button>
       <p className="text-sm text-center text-green-700 mt-4">
         Already have an account?{" "}
-        <a
-          href="/login"
+        <Link
+          to="/login"
           className="font-semibold text-green-800 underline hover:text-green-600"
         >
-          Login here
-        </a>
+            Login here
+        </Link>
       </p>
     </form>
   );

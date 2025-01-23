@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../utils/authUtils";
+import { Link } from "react-router-dom";
 
 const LoginForm = ({ setIsLoggedIn, setUser }) => {
   const [email, setEmail] = useState("");
@@ -76,12 +77,12 @@ const LoginForm = ({ setIsLoggedIn, setUser }) => {
       </button>
       <p className="text-sm text-center text-blue-700 mt-4">
         Don't have an account?{" "}
-        <a
-          href="register"
-          className="font-semibold text-blue-800 underline hover:text-blue-600"
+        <Link
+          to="/register"
+          className="font-semibold text-green-800 underline hover:text-green-600"
         >
           Register here
-        </a>
+        </Link>
       </p>
     </form>
   );
