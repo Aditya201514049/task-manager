@@ -1,0 +1,30 @@
+{
+    "redirects": [
+      {
+        "source": "/login",
+        "destination": "/login",
+        "status": 200
+      },
+      {
+        "source": "/register",
+        "destination": "/register",
+        "status": 200
+      },
+      {
+        "source": "/tasks",
+        "destination": "/tasks",
+        "status": 200
+      },
+      {
+        "source": "/",
+        "destination": "/",
+        "status": 200
+      },
+      {
+        "source": "/*",
+        "destination": "/index.html",
+        "status": 200
+      }
+    ]
+  }
+  
