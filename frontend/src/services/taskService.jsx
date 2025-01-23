@@ -1,5 +1,5 @@
 
-const API_URL = import.meta.env.Task_URL || "http://localhost:5000";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 // Helper function to check if the token is expired
 export const isTokenExpired = (token) => {
