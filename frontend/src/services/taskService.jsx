@@ -1,5 +1,5 @@
 
-
+const API_URL = import.meta.env.Task_URL || "http://localhost:5000";
 
 // Helper function to check if the token is expired
 export const isTokenExpired = (token) => {
@@ -29,7 +29,7 @@ export const createTask = async (taskData) => {
   const token = getToken();
   if (!token) throw new Error('Authorization token is missing or expired');
 
-  const response = await fetch('http://localhost:5000/api/tasks', {
+  const response = await fetch(`${API_URL}/api/tasks`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const getTasks = async () => {
   const token = getToken();
   if (!token) throw new Error('Authorization token is missing or expired');
 
-  const response = await fetch('http://localhost:5000/api/tasks', {
+  const response = await fetch(`${API_URL}/api/tasks`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ export const updateTask = async (taskId, taskData) => {
   const token = getToken();
   if (!token) throw new Error('Authorization token is missing or expired');
 
-  const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+  const response = await fetch(`${API_URL}/api/tasks/${taskId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export const deleteTask = async (taskId) => {
   const token = getToken();
   if (!token) throw new Error('Authorization token is missing or expired');
 
-  const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+  const response = await fetch(`${API_URL}/api/tasks/${taskId}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,

@@ -1,10 +1,11 @@
 
 import axios from "axios";
+const API_URL = import.meta.env.Task_URL || "http://localhost:5000";
 
 export const loginUser = async (email, password) => {
     try {
         // Send login request to the server
-        const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
+        const response = await axios.post(`${API_URL}/api/users/login`, { email, password });
 
         // Log the response from the server to ensure it's correct
         console.log("Login Response:", response.data);
@@ -22,7 +23,7 @@ export const loginUser = async (email, password) => {
 
             // Fetch user details using the token
             try {
-                const userResponse = await axios.get('http://localhost:5000/api/users/me', {
+                const userResponse = await axios.get(`${API_URL}/api/users/me`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 

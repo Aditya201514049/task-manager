@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.Task_URL || "http://localhost:5000";
 
 const RegisterForm = ({ onRegisterSuccess }) => {
   const [name, setName] = useState("");
@@ -17,7 +18,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${API_URL}/api/users/register`,
         {
           name,
           email,
