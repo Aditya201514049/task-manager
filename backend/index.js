@@ -17,7 +17,7 @@ app.use(express.json());
 
 // ✅ CORS FIX: Explicitly allow frontend & handle preflight requests
 const corsOptions = {
-    origin: ["https://task-manager-1995.onrender.com/", "http://localhost:3000"], // Allow frontend URLs
+    origin: ["https://task-manager-1995.onrender.com", "http://localhost:3000"], // Allow frontend URLs
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // Allow cookies/tokens if needed
