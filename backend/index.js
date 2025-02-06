@@ -14,7 +14,7 @@ const app = express();
 
 // Allow requests from both localhost and the network IP
 const corsOptions = {
-    origin: ['http://localhost:3000'], // Add your network device's IP address here if needed
+    origin: ['http://localhost:3000', 'https://task-manager-1995.netlify.app'], // Add your network device's IP address here if needed
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,  // Enable cookies if needed
   };
