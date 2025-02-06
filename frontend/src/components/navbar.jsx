@@ -12,7 +12,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
 
   return (
     <nav className="bg-gray-800 p-4 fixed top-0 left-0 w-full shadow-lg z-10">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center flex-wrap">
         {/* Left Section - Title */}
         <h1 className="text-white text-2xl font-bold">Task Manager</h1>
 
