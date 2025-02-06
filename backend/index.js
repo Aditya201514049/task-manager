@@ -1,3 +1,4 @@
+/*
 const dotenv = require("dotenv"); // Import dotenv
 dotenv.config(); // Load environment variables
 
@@ -41,6 +42,57 @@ app.get('/',(req, res)=>{
 // connect to MongoDB
 mongoose.connect(config.MONGO_URI, {
     useNewUrlParser: true, // Parses connection string
+    useUnifiedTopology: true, // Enables the new Server Discover and Monitoring engine
+    serverSelectionTimeoutMS: 10000, // Wait up to 10 seconds for server selection
+})
+    .then(() => console.log("Connected to MongoDB"))
+    .catch(err => {
+        console.error("MongoDB connection error:", err.message);
+        process.exit(1); // Exit process if connection fails
+    });
+
+// Start the server
+const PORT = config.PORT || 5000;
+const HOST = '0.0.0.0'; // Makes the server accessible on the local network
+app.listen(PORT, HOST, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+*/
+
+const dotenv = require("dotenv"); // Import dotenv
+dotenv.config(); // Load environment variables
+
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");  // Import CORS
+const config = require("./config/config.js");
+
+const userRoutes = require("./routes/userRoutes");
+const taskRoutes = require("./routes/taskRoutes");
+
+const app = express();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Allow requests from both localhost and the network IP
+const corsOptions = {
+    origin: ['https://task-manager-1995.onrender.com'], // Add your frontend URLs here
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'], // Ensure these headers are allowed
+    credentials: true,  // Enable cookies if needed
+};
+
+app.use(cors(corsOptions)); // Apply the CORS middleware
+
+// Use routes
+app.use('/api/users', userRoutes);
+app.use('/api/tasks', taskRoutes);
+
+// Connect to MongoDB
+mongoose.connect(config.mongoURI, {
+    useNewUrlParser: true,
     useUnifiedTopology: true, // Enables the new Server Discover and Monitoring engine
     serverSelectionTimeoutMS: 10000, // Wait up to 10 seconds for server selection
 })
