@@ -12,7 +12,10 @@ dotenv.config();
 const app = express();
 
 // ✅ CORS Setup (Same as Chat App)
-app.use(cors({ origin: ["https://task-manager-1-6ubf.onrender.com", "http://localhost:3000"] }));
+app.use(cors({
+    origin: ["https://task-manager-1-6ubf.onrender.com", "http://localhost:3000"],
+    credentials: true // ✅ Allow cookies/tokens
+}));
 
 // ✅ Middleware
 app.use(express.json()); // Parse JSON requests
