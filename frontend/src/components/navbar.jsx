@@ -1,26 +1,52 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = ({ isLoggedIn, handleLogout, user }) => {
   const [showUserDetails, setShowUserDetails] = useState(false);
-  const location = useLocation(); // Get current route path
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const mobileDropdownRef = useRef(null);
+  const userDropdownRef = useRef(null);
+
+  // Handle click outside for dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileDropdownRef.current && !mobileDropdownRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+        setShowUserDetails(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setShowUserDetails(false); // Close user dropdown when mobile menu opens
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   const toggleUserDetails = () => {
-    setShowUserDetails((prevState) => !prevState);
+    setShowUserDetails((prev) => !prev);
+    setIsMobileMenuOpen(false); // Close mobile menu when user dropdown opens
   };
 
   return (
     <nav className="bg-gray-800 p-4 fixed top-0 left-0 w-full shadow-lg z-10">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Left Section - Title */}
         <h1 className="text-white text-2xl font-bold">Task Manager</h1>
 
-        {/* Right Section - Buttons */}
-        <div className="flex items-center space-x-4">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-4">
           {isLoggedIn ? (
             <>
-              {/* Task Form Button */}
               <Link
                 to="/"
                 className={`px-4 py-2 rounded-lg text-white ${
@@ -32,7 +58,6 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                 Task Form
               </Link>
 
-              {/* Task List Button */}
               <Link
                 to="/tasks"
                 className={`px-4 py-2 rounded-lg text-white ${
@@ -44,41 +69,35 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                 Task List
               </Link>
 
-              {/* Username Button */}
-              <button
-                onClick={toggleUserDetails}
-                className={`px-4 py-2 rounded-lg text-white ${
-                  showUserDetails
-                    ? "bg-yellow-500 hover:bg-yellow-600 border-2 border-yellow-500"
-                    : "hover:border-2 hover:border-yellow-500"
-                }`}
-              >
-                {user ? user.name : "Guest"}
-              </button>
+              <div className="relative" ref={userDropdownRef}>
+                <button
+                  onClick={toggleUserDetails}
+                  className={`px-4 py-2 rounded-lg text-white ${
+                    showUserDetails
+                      ? "bg-yellow-500 hover:bg-yellow-600 border-2 border-yellow-500"
+                      : "hover:border-2 hover:border-yellow-500"
+                  }`}
+                >
+                  {user?.name || "Guest"}
+                </button>
 
-              {/* Logout Button */}
+                {showUserDetails && user && (
+                  <div className="absolute top-12 right-0 bg-white text-black p-4 rounded shadow-lg">
+                    <p><strong>Name:</strong> {user.name}</p>
+                    <p><strong>Email:</strong> {user.email}</p>
+                  </div>
+                )}
+              </div>
+
               <button
                 onClick={handleLogout}
                 className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white"
               >
                 Logout
               </button>
-
-              {/* User Details Dropdown */}
-              {showUserDetails && user && (
-                <div className="absolute top-16 right-4 bg-white text-black p-4 rounded shadow-lg">
-                  <p>
-                    <strong>Name:</strong> {user.name}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {user.email}
-                  </p>
-                </div>
-              )}
             </>
           ) : (
             <>
-              {/* Login Button */}
               <Link
                 to="/login"
                 className={`px-4 py-2 rounded-lg text-white ${
@@ -90,7 +109,6 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                 Login
               </Link>
 
-              {/* Register Button */}
               <Link
                 to="/register"
                 className={`px-4 py-2 rounded-lg text-white ${
@@ -102,6 +120,91 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                 Register
               </Link>
             </>
+          )}
+        </div>
+
+        {/* Mobile Hamburger Menu */}
+        <div className="md:hidden relative">
+          <button
+            onClick={toggleMobileMenu}
+            className="text-white focus:outline-none"
+          >
+            {isMobileMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+
+          {/* Mobile Dropdown Menu */}
+          {isMobileMenuOpen && (
+            <div
+              ref={mobileDropdownRef}
+              className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-20"
+            >
+              <div className="flex flex-col p-2 space-y-2">
+                {isLoggedIn ? (
+                  <>
+                    <Link
+                      to="/"
+                      onClick={closeMobileMenu}
+                      className={`px-4 py-2 text-white rounded-lg ${
+                        location.pathname === "/" ? "bg-blue-500" : "hover:bg-gray-600"
+                      }`}
+                    >
+                      Task Form
+                    </Link>
+                    <Link
+                      to="/tasks"
+                      onClick={closeMobileMenu}
+                      className={`px-4 py-2 text-white rounded-lg ${
+                        location.pathname === "/tasks" ? "bg-green-500" : "hover:bg-gray-600"
+                      }`}
+                    >
+                      Task List
+                    </Link>
+                    <div className="px-4 py-2 text-white border-t border-gray-600">
+                      <p className="font-bold">{user?.name || "Guest"}</p>
+                      <p className="text-sm text-gray-300">{user?.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        closeMobileMenu();
+                      }}
+                      className="px-4 py-2 text-left text-red-400 hover:bg-gray-600 rounded-lg"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={closeMobileMenu}
+                      className={`px-4 py-2 text-white rounded-lg ${
+                        location.pathname === "/login" ? "bg-indigo-500" : "hover:bg-gray-600"
+                      }`}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/register"
+                      onClick={closeMobileMenu}
+                      className={`px-4 py-2 text-white rounded-lg ${
+                        location.pathname === "/register" ? "bg-purple-500" : "hover:bg-gray-600"
+                      }`}
+                    >
+                      Register
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
           )}
         </div>
       </div>
