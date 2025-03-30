@@ -81,9 +81,18 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                 </button>
 
                 {showUserDetails && user && (
-                  <div className="absolute top-12 right-0 bg-white text-black p-4 rounded shadow-lg">
-                    <p><strong>Name:</strong> {user.name}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
+                  <div className="absolute top-12 right-0 bg-white text-black p-4 rounded shadow-lg w-56">
+                    <div className="mb-4">
+                      <p className="font-bold text-gray-800">{user.name}</p>
+                      <p className="text-sm text-gray-600">{user.email}</p>
+                    </div>
+                    <Link
+                      to="/profile"
+                      onClick={() => setShowUserDetails(false)}
+                      className="block w-full py-2 px-3 text-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200"
+                    >
+                      View Profile
+                    </Link>
                   </div>
                 )}
               </div>
@@ -182,6 +191,13 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                     <div className="px-4 py-2 text-white border-t border-gray-600">
                       <p className="font-bold">{user?.name || "Guest"}</p>
                       <p className="text-sm text-gray-300">{user?.email}</p>
+                      <Link
+                        to="/profile"
+                        onClick={closeMobileMenu}
+                        className="mt-2 block w-full py-1.5 px-2 text-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm"
+                      >
+                        View Profile
+                      </Link>
                     </div>
                     <button
                       onClick={() => {

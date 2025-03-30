@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar";
@@ -6,6 +5,7 @@ import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import Profile from "./pages/Profile";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
@@ -47,6 +47,10 @@ const App = () => {
               <Route
                 path="/tasks"
                 element={<TaskList key={taskListKey} user={user} token={token} />}
+              />
+              <Route
+                path="/profile"
+                element={<Profile user={user} token={token} />}
               />
               <Route path="*" element={<Navigate to="/" />} />
             </>
