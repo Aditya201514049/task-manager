@@ -17,8 +17,34 @@ const App = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
-    setToken(storedToken);
-  }, [isLoggedIn]);
+    if (storedToken) {
+      setToken(storedToken);
+      setIsLoggedIn(true);
+      
+      // Fetch user data using the token
+      const fetchUser = async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/me`, {
+            headers: { Authorization: `Bearer ${storedToken}` },
+          });
+          
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+          } else {
+            // If token is invalid, log the user out
+            handleLogout();
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          // If there's an error, log the user out
+          handleLogout();
+        }
+      };
+      
+      fetchUser();
+    }
+  }, []); // Only run once on component mount
 
   // Refresh the task list when a task is added
   const handleSave = () => {
@@ -52,6 +78,8 @@ const App = () => {
                 path="/profile"
                 element={<Profile user={user} token={token} />}
               />
+              <Route path="/login" element={<Navigate to="/" />} />
+              <Route path="/register" element={<Navigate to="/" />} />
               <Route path="*" element={<Navigate to="/" />} />
             </>
           ) : (
