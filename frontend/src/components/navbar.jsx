@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -128,6 +127,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
           <button
             onClick={toggleMobileMenu}
             className="text-white focus:outline-none"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMobileMenuOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,6 +147,18 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
               className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-20"
             >
               <div className="flex flex-col p-2 space-y-2">
+                <div className="flex justify-between items-center border-b border-gray-600 pb-2 mb-1">
+                  <span className="text-white font-medium">Menu</span>
+                  <button 
+                    onClick={closeMobileMenu}
+                    className="text-white hover:text-red-400 focus:outline-none"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
                 {isLoggedIn ? (
                   <>
                     <Link
