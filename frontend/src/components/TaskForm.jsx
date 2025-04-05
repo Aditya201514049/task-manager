@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { createTask } from "../services/taskService";
 import { useNavigate } from "react-router-dom";
@@ -70,9 +69,9 @@ const TaskForm = ({ task, onSave, user, token }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gradient-to-r from-blue-50 to-purple-50 shadow-lg rounded-xl p-8 max-w-xl mx-auto mt-8"
+      className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 shadow-lg rounded-xl p-8 max-w-xl mx-auto mt-8 transition-colors duration-200"
     >
-      <h2 className="text-2xl font-bold text-gray-700 mb-6">
+      <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-6 transition-colors duration-200">
         {task ? "Edit Task" : "Create New Task"}
       </h2>
 
@@ -81,7 +80,7 @@ const TaskForm = ({ task, onSave, user, token }) => {
 
       <div className="form-control mb-4">
         <label className="label">
-          <span className="label-text font-semibold">Title</span>
+          <span className="label-text font-semibold dark:text-gray-300 transition-colors duration-200">Title</span>
         </label>
         <input
           type="text"
@@ -89,31 +88,31 @@ const TaskForm = ({ task, onSave, user, token }) => {
           onChange={(e) => setTitle(e.target.value)}
           required
           placeholder="Enter Task Title"
-          className="input input-bordered"
+          className="input input-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
         />
       </div>
 
       <div className="form-control mb-4">
         <label className="label">
-          <span className="label-text font-semibold">Description</span>
+          <span className="label-text font-semibold dark:text-gray-300 transition-colors duration-200">Description</span>
         </label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
           placeholder="Enter Description"
-          className="textarea textarea-bordered"
+          className="textarea textarea-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
         />
       </div>
 
       <div className="form-control mb-4">
         <label className="label">
-          <span className="label-text font-semibold">Status</span>
+          <span className="label-text font-semibold dark:text-gray-300 transition-colors duration-200">Status</span>
         </label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="select select-bordered"
+          className="select select-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
         >
           <option value="pending">Pending</option>
           <option value="in-progress">In Progress</option>
@@ -123,24 +122,24 @@ const TaskForm = ({ task, onSave, user, token }) => {
 
       <div className="form-control mb-4">
         <label className="label">
-          <span className="label-text font-semibold">Due Date</span>
+          <span className="label-text font-semibold dark:text-gray-300 transition-colors duration-200">Due Date</span>
         </label>
         <input
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
-          className="input input-bordered"
+          className="input input-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
         />
       </div>
 
       <div className="form-control mb-4">
         <label className="label">
-          <span className="label-text font-semibold">Priority</span>
+          <span className="label-text font-semibold dark:text-gray-300 transition-colors duration-200">Priority</span>
         </label>
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
-          className="select select-bordered"
+          className="select select-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
         >
           <option value="low">Low</option>
           <option value="medium">Medium</option>
@@ -150,14 +149,14 @@ const TaskForm = ({ task, onSave, user, token }) => {
 
       <div className="form-control mb-6">
         <label className="label">
-          <span className="label-text font-semibold">Labels (comma separated)</span>
+          <span className="label-text font-semibold dark:text-gray-300 transition-colors duration-200">Labels (comma separated)</span>
         </label>
         <input
           type="text"
           value={labels}
           onChange={(e) => setLabels(e.target.value)}
           placeholder="Enter labels separated by commas"
-          className="input input-bordered"
+          className="input input-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
         />
       </div>
 
@@ -172,7 +171,7 @@ const TaskForm = ({ task, onSave, user, token }) => {
           <button
             type="button"
             onClick={resetForm}
-            className="btn btn-ghost text-red-500"
+            className="btn btn-ghost text-red-500 dark:text-red-400 transition-colors duration-200"
           >
             Cancel Edit
           </button>

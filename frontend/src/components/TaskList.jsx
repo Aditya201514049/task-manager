@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { getTasks, deleteTask, updateTask } from "../services/taskService";
 import dayjs from "dayjs";
@@ -132,20 +131,20 @@ const TaskList = ({ refresh }) => {
     setViewingTask(null);
   };
 
-  if (loading) return <p className="text-blue-500">Loading tasks...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (loading) return <p className="text-blue-500 dark:text-blue-400">Loading tasks...</p>;
+  if (error) return <p className="text-red-500 dark:text-red-400">{error}</p>;
 
   return (
    
-    <div className="bg-blue-50 shadow-lg rounded-2xl p-6 max-w-4xl mx-auto mt-10">
-      <h2 className="text-3xl font-extrabold text-purple-800 mb-6 text-center">Task List</h2>
+    <div className="bg-blue-50 dark:bg-gray-800 shadow-lg rounded-2xl p-6 max-w-4xl mx-auto mt-10 transition-colors duration-200">
+      <h2 className="text-3xl font-extrabold text-purple-800 dark:text-purple-400 mb-6 text-center transition-colors duration-200">Task List</h2>
 
       {/* Filter and Sort */}
       <div className="mb-6 flex justify-between items-center">
         <select
           value={filterStatus}
           onChange={handleFilterChange}
-          className="select select-bordered"
+          className="select select-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
         >
           <option value="all">All</option>
           <option value="pending">Pending</option>
@@ -165,13 +164,13 @@ const TaskList = ({ refresh }) => {
           filteredTasks.map((task) => (
             <li
               key={task._id}
-              className="bg-white rounded-xl shadow-md p-4 border-l-8 transition-transform transform hover:scale-105 hover:shadow-lg border-purple-400"
+              className="bg-white dark:bg-gray-700 rounded-xl shadow-md p-4 border-l-8 transition-all transform hover:scale-105 hover:shadow-lg border-purple-400 dark:border-purple-500"
             >
               <div className="flex justify-between items-start">
                 <div className="flex-1">
                   {viewingTask && viewingTask._id === task._id ? (
                     <div>
-                      <h3 className="text-xl font-bold text-gray-800 mb-1">
+                      <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-1 transition-colors duration-200">
                         {task.title}
                         <span
                           className={`ml-2 text-xs font-semibold py-1 px-2 rounded-full text-white ${task.status === "completed"
@@ -185,17 +184,17 @@ const TaskList = ({ refresh }) => {
                         </span>
                       </h3>
                       {task.dueDate && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                           <strong>Due:</strong> {dayjs(task.dueDate).format("DD/MM/YYYY")}
                         </p>
                       )}
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                         <strong>Priority:</strong> {task.priority || "Medium"}
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                         <strong>Description:</strong> {task.description}
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                         <strong>Labels:</strong> {task.labels.join(", ")}
                       </p>
                       <button
@@ -206,70 +205,94 @@ const TaskList = ({ refresh }) => {
                       </button>
                     </div>
                   ) : editingTask && editingTask._id === task._id ? (
-                    <div>
-                      <input
-                        type="text"
-                        value={updatedTitle}
-                        onChange={(e) => setUpdatedTitle(e.target.value)}
-                        className="input input-bordered w-full mb-2"
-                        placeholder="Task Title"
-                      />
-                      <textarea
-                        value={updatedDescription}
-                        onChange={(e) => setUpdatedDescription(e.target.value)}
-                        className="textarea textarea-bordered w-full mb-2"
-                        rows="3"
-                        placeholder="Task Description"
-                      />
-                      <input
-                        type="text"
-                        value={updatedLabels}
-                        onChange={(e) => setUpdatedLabels(e.target.value)}
-                        className="input input-bordered w-full mb-2"
-                        placeholder="Labels (comma separated)"
-                      />
-                      <select
-                        value={updatedStatus}
-                        onChange={(e) => setUpdatedStatus(e.target.value)}
-                        className="select select-bordered w-full mb-2"
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                      </select>
-                      <select
-                        value={updatedPriority}
-                        onChange={(e) => setUpdatedPriority(e.target.value)}
-                        className="select select-bordered w-full mb-2"
-                      >
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                      </select>
-                      <input
-                        type="date"
-                        value={updatedDueDate}
-                        onChange={(e) => setUpdatedDueDate(e.target.value)}
-                        className="input input-bordered w-full mb-2"
-                      />
-                      <div className="flex justify-end space-x-2 mt-4">
-                        <button
-                          onClick={handleSave}
-                          className="btn btn-success"
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={() => setEditingTask(null)}
-                          className="btn btn-secondary"
-                        >
-                          Cancel
-                        </button>
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full transition-colors duration-200">
+                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4 transition-colors duration-200">Edit Task</h3>
+                        
+                        <div className="mb-4">
+                          <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2 transition-colors duration-200">Title</label>
+                          <input
+                            type="text"
+                            value={updatedTitle}
+                            onChange={(e) => setUpdatedTitle(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
+                          />
+                        </div>
+                        
+                        <div className="mb-4">
+                          <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2 transition-colors duration-200">Description</label>
+                          <textarea
+                            value={updatedDescription}
+                            onChange={(e) => setUpdatedDescription(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
+                          ></textarea>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2 transition-colors duration-200">Labels (comma separated)</label>
+                          <input
+                            type="text"
+                            value={updatedLabels}
+                            onChange={(e) => setUpdatedLabels(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
+                          />
+                        </div>
+                        
+                        <div className="mb-4">
+                          <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2 transition-colors duration-200">Status</label>
+                          <select
+                            value={updatedStatus}
+                            onChange={(e) => setUpdatedStatus(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                          </select>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2 transition-colors duration-200">Due Date</label>
+                          <input
+                            type="date"
+                            value={updatedDueDate}
+                            onChange={(e) => setUpdatedDueDate(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
+                          />
+                        </div>
+                        
+                        <div className="mb-4">
+                          <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2 transition-colors duration-200">Priority</label>
+                          <select
+                            value={updatedPriority}
+                            onChange={(e) => setUpdatedPriority(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
+                          >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                          </select>
+                        </div>
+                        
+                        <div className="flex justify-end space-x-3">
+                          <button
+                            onClick={() => setEditingTask(null)}
+                            className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-200"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handleSave}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+                          >
+                            Save
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <h3 className="text-xl font-bold text-gray-800 mb-1">
+                      <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-1 transition-colors duration-200">
                         {task.title}
                         <span
                           className={`ml-2 text-xs font-semibold py-1 px-2 rounded-full text-white ${task.status === "completed"
@@ -283,41 +306,50 @@ const TaskList = ({ refresh }) => {
                         </span>
                       </h3>
                       {task.dueDate && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                           <strong>Due:</strong> {dayjs(task.dueDate).format("DD/MM/YYYY")}
                         </p>
                       )}
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">
                         <strong>Priority:</strong> {task.priority || "Medium"}
                       </p>
-                      <div className="flex justify-end space-x-2 mt-4">
-                        <button
-                          onClick={() => handleViewClick(task)}
-                          className="btn btn-info btn-sm"
-                        >
-                          View
-                        </button>
-                        <button
-                          onClick={() => handleEditClick(task)}
-                          className="btn btn-primary btn-sm"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(task._id)}
-                          className="btn btn-error btn-sm"
-                        >
-                          Delete
-                        </button>
-                      </div>
                     </div>
                   )}
+                </div>
+                <div className="flex space-x-2">
+                  {!viewingTask || viewingTask._id !== task._id ? (
+                    <button
+                      onClick={() => handleViewClick(task)}
+                      className="btn btn-sm btn-info text-white"
+                    >
+                      View
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleCloseView}
+                      className="btn btn-sm btn-info text-white"
+                    >
+                      Collapse
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleEditClick(task)}
+                    className="btn btn-sm btn-success text-white"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(task._id)}
+                    className="btn btn-sm btn-error text-white"
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </li>
           ))
         ) : (
-          <p className="text-gray-500 text-center">No tasks available for the selected filter.</p>
+          <p className="text-center text-gray-500 dark:text-gray-400 py-4 transition-colors duration-200">No tasks found. Try changing filters or add a new task.</p>
         )}
       </ul>
     </div>
