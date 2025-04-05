@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = ({ isLoggedIn, handleLogout, user }) => {
   const [showUserDetails, setShowUserDetails] = useState(false);
@@ -45,7 +46,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
   };
 
   return (
-    <nav className="bg-gray-800 p-4 fixed top-0 left-0 w-full shadow-lg z-10">
+    <nav className="bg-gray-800 dark:bg-gray-900 p-4 fixed top-0 left-0 w-full shadow-lg z-10 transition-colors duration-200">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-white text-2xl font-bold">Task Manager</h1>
 
@@ -88,10 +89,10 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                 </button>
 
                 {showUserDetails && user && (
-                  <div className="absolute top-12 right-0 bg-white text-black p-4 rounded shadow-lg w-56">
+                  <div className="absolute top-12 right-0 bg-white dark:bg-gray-800 text-black dark:text-white p-4 rounded shadow-lg w-56 transition-colors duration-200">
                     <div className="mb-4">
-                      <p className="font-bold text-gray-800">{user.name}</p>
-                      <p className="text-sm text-gray-600">{user.email}</p>
+                      <p className="font-bold text-gray-800 dark:text-gray-200">{user.name}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{user.email}</p>
                     </div>
                     <Link
                       to="/profile"
@@ -103,6 +104,8 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                   </div>
                 )}
               </div>
+
+              <ThemeToggle />
 
               <button
                 onClick={handleLogout}
@@ -134,16 +137,19 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
               >
                 Register
               </Link>
+
+              <ThemeToggle />
             </>
           )}
         </div>
 
         {/* Mobile Hamburger Menu */}
-        <div className="md:hidden relative">
+        <div className="md:hidden flex items-center space-x-2">
+          <ThemeToggle />
           <button
             ref={mobileMenuButtonRef}
             onClick={toggleMobileMenu}
-            className="text-white focus:outline-none p-2 rounded-lg hover:bg-gray-700"
+            className="text-white focus:outline-none p-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-800"
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMobileMenuOpen ? (
@@ -161,7 +167,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
           {isMobileMenuOpen && (
             <div
               ref={mobileDropdownRef}
-              className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-20"
+              className="absolute right-0 mt-2 w-48 bg-gray-700 dark:bg-gray-800 rounded-md shadow-lg z-20 top-14 transition-colors duration-200"
             >
               <div className="flex flex-col p-2 space-y-2">
                 {isLoggedIn ? (
@@ -170,7 +176,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                       to="/"
                       onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
-                        location.pathname === "/" ? "bg-blue-500" : "hover:bg-gray-600"
+                        location.pathname === "/" ? "bg-blue-500" : "hover:bg-gray-600 dark:hover:bg-gray-700"
                       }`}
                     >
                       Task Form
@@ -179,14 +185,14 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                       to="/tasks"
                       onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
-                        location.pathname === "/tasks" ? "bg-green-500" : "hover:bg-gray-600"
+                        location.pathname === "/tasks" ? "bg-green-500" : "hover:bg-gray-600 dark:hover:bg-gray-700"
                       }`}
                     >
                       Task List
                     </Link>
                     <div className="px-4 py-2 text-white border-t border-gray-600">
                       <p className="font-bold">{user?.name || "Guest"}</p>
-                      <p className="text-sm text-gray-300">{user?.email}</p>
+                      <p className="text-sm text-gray-300 dark:text-gray-400">{user?.email}</p>
                       <Link
                         to="/profile"
                         onClick={closeMenu}
@@ -200,7 +206,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                         handleLogout();
                         closeMenu();
                       }}
-                      className="px-4 py-2 text-left text-red-400 hover:bg-gray-600 rounded-lg"
+                      className="px-4 py-2 text-left text-red-400 hover:bg-gray-600 dark:hover:bg-gray-700 rounded-lg"
                     >
                       Logout
                     </button>
@@ -211,7 +217,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                       to="/login"
                       onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
-                        location.pathname === "/login" ? "bg-indigo-500" : "hover:bg-gray-600"
+                        location.pathname === "/login" ? "bg-indigo-500" : "hover:bg-gray-600 dark:hover:bg-gray-700"
                       }`}
                     >
                       Login
@@ -220,7 +226,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                       to="/register"
                       onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
-                        location.pathname === "/register" ? "bg-purple-500" : "hover:bg-gray-600"
+                        location.pathname === "/register" ? "bg-purple-500" : "hover:bg-gray-600 dark:hover:bg-gray-700"
                       }`}
                     >
                       Register

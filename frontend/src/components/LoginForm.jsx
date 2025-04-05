@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../utils/authUtils";
@@ -34,34 +32,34 @@ const LoginForm = ({ setIsLoggedIn, setUser }) => {
   return (
     <form
       onSubmit={handleLogin}
-      className="max-w-md mx-auto bg-gradient-to-br from-blue-100 to-blue-200 p-8 rounded-xl shadow-lg"
+      className="max-w-md mx-auto bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-indigo-900 p-8 rounded-xl shadow-lg transition-colors duration-200"
     >
-      <h2 className="text-3xl font-extrabold mb-6 text-blue-700 text-center">
+      <h2 className="text-3xl font-extrabold mb-6 text-blue-700 dark:text-blue-300 text-center">
         Welcome Back!
       </h2>
       {error && (
-        <p className="text-red-500 mb-4 text-center font-medium">{error}</p>
+        <p className="text-red-500 dark:text-red-400 mb-4 text-center font-medium">{error}</p>
       )}
       <div className="mb-6">
-        <label className="block text-blue-900 font-medium mb-2">Email</label>
+        <label className="block text-blue-900 dark:text-blue-300 font-medium mb-2">Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
           placeholder="Enter your email"
-          className="input input-bordered w-full px-4 py-2 border-2 border-blue-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="input input-bordered w-full px-4 py-2 border-2 border-blue-400 dark:border-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors duration-200"
         />
       </div>
       <div className="mb-6">
-        <label className="block text-blue-900 font-medium mb-2">Password</label>
+        <label className="block text-blue-900 dark:text-blue-300 font-medium mb-2">Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           placeholder="Enter your password"
-          className="input input-bordered w-full px-4 py-2 border-2 border-blue-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="input input-bordered w-full px-4 py-2 border-2 border-blue-400 dark:border-blue-500 bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors duration-200"
         />
       </div>
       <button
@@ -69,17 +67,17 @@ const LoginForm = ({ setIsLoggedIn, setUser }) => {
         disabled={loading}
         className={`btn w-full py-3 mt-4 text-white text-lg font-semibold rounded-md ${
           loading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-300"
-        }`}
+            ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-2 focus:ring-blue-300"
+        } transition-colors duration-200`}
       >
         {loading ? "Logging in..." : "Login"}
       </button>
-      <p className="text-sm text-center text-blue-700 mt-4">
+      <p className="text-sm text-center text-blue-700 dark:text-blue-300 mt-4">
         Don't have an account?{" "}
         <Link
           to="/register"
-          className="font-semibold text-green-800 underline hover:text-green-600"
+          className="font-semibold text-green-800 dark:text-green-400 underline hover:text-green-600 dark:hover:text-green-300"
         >
           Register here
         </Link>

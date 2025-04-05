@@ -6,6 +6,7 @@ import TaskList from "./components/TaskList";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Profile from "./pages/Profile";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Login state
@@ -59,7 +60,7 @@ const App = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-200">
       <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} user={user} />
 
       <div className="pt-16">
@@ -110,9 +111,11 @@ const App = () => {
 
 const AppWrapper = () => {
   return (
-    <Router>
-      <App />
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <App />
+      </Router>
+    </ThemeProvider>
   );
 };
 
