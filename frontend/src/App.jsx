@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "./components/navbar";
+import Footer from "./components/Footer";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Profile from "./pages/Profile";
+import About from "./pages/About";
+import FAQs from "./pages/FAQs";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 import { ThemeProvider } from "./context/ThemeContext";
 
 const App = () => {
@@ -60,11 +65,18 @@ const App = () => {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-200">
+    <div className="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-200">
       <Navbar isLoggedIn={isLoggedIn} handleLogout={handleLogout} user={user} />
 
-      <div className="pt-16">
+      <div className="pt-16 flex-grow">
         <Routes>
+          {/* Public routes accessible to all users */}
+          <Route path="/about" element={<About />} />
+          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+
+          {/* Protected and authentication routes */}
           {isLoggedIn ? (
             <>
               <Route
@@ -105,6 +117,8 @@ const App = () => {
           )}
         </Routes>
       </div>
+
+      <Footer />
     </div>
   );
 };
