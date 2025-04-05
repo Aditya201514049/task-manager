@@ -7,11 +7,18 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
   const location = useLocation();
   const mobileDropdownRef = useRef(null);
   const userDropdownRef = useRef(null);
+  const mobileMenuButtonRef = useRef(null);
 
   // Handle click outside for dropdowns
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (mobileDropdownRef.current && !mobileDropdownRef.current.contains(event.target)) {
+      if (
+        isMobileMenuOpen && 
+        mobileDropdownRef.current && 
+        !mobileDropdownRef.current.contains(event.target) &&
+        mobileMenuButtonRef.current && 
+        !mobileMenuButtonRef.current.contains(event.target)
+      ) {
         setIsMobileMenuOpen(false);
       }
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
@@ -21,14 +28,14 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [isMobileMenuOpen]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     setShowUserDetails(false); // Close user dropdown when mobile menu opens
   };
 
-  const closeMobileMenu = () => {
+  const closeMenu = () => {
     setIsMobileMenuOpen(false);
   };
 
@@ -134,8 +141,9 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
         {/* Mobile Hamburger Menu */}
         <div className="md:hidden relative">
           <button
+            ref={mobileMenuButtonRef}
             onClick={toggleMobileMenu}
-            className="text-white focus:outline-none"
+            className="text-white focus:outline-none p-2 rounded-lg hover:bg-gray-700"
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMobileMenuOpen ? (
@@ -156,23 +164,11 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
               className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-20"
             >
               <div className="flex flex-col p-2 space-y-2">
-                <div className="flex justify-between items-center border-b border-gray-600 pb-2 mb-1">
-                  <span className="text-white font-medium">Menu</span>
-                  <button 
-                    onClick={closeMobileMenu}
-                    className="text-white hover:text-red-400 focus:outline-none"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-                
                 {isLoggedIn ? (
                   <>
                     <Link
                       to="/"
-                      onClick={closeMobileMenu}
+                      onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
                         location.pathname === "/" ? "bg-blue-500" : "hover:bg-gray-600"
                       }`}
@@ -181,7 +177,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                     </Link>
                     <Link
                       to="/tasks"
-                      onClick={closeMobileMenu}
+                      onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
                         location.pathname === "/tasks" ? "bg-green-500" : "hover:bg-gray-600"
                       }`}
@@ -193,7 +189,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                       <p className="text-sm text-gray-300">{user?.email}</p>
                       <Link
                         to="/profile"
-                        onClick={closeMobileMenu}
+                        onClick={closeMenu}
                         className="mt-2 block w-full py-1.5 px-2 text-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm"
                       >
                         View Profile
@@ -202,7 +198,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                     <button
                       onClick={() => {
                         handleLogout();
-                        closeMobileMenu();
+                        closeMenu();
                       }}
                       className="px-4 py-2 text-left text-red-400 hover:bg-gray-600 rounded-lg"
                     >
@@ -213,7 +209,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                   <>
                     <Link
                       to="/login"
-                      onClick={closeMobileMenu}
+                      onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
                         location.pathname === "/login" ? "bg-indigo-500" : "hover:bg-gray-600"
                       }`}
@@ -222,7 +218,7 @@ const Navbar = ({ isLoggedIn, handleLogout, user }) => {
                     </Link>
                     <Link
                       to="/register"
-                      onClick={closeMobileMenu}
+                      onClick={closeMenu}
                       className={`px-4 py-2 text-white rounded-lg ${
                         location.pathname === "/register" ? "bg-purple-500" : "hover:bg-gray-600"
                       }`}
