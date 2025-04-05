@@ -166,7 +166,7 @@ const TaskList = ({ refresh }) => {
               key={task._id}
               className="bg-white dark:bg-gray-700 rounded-xl shadow-md p-4 border-l-8 transition-all transform hover:scale-105 hover:shadow-lg border-purple-400 dark:border-purple-500"
             >
-              <div className="flex justify-between items-start">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-start">
                 <div className="flex-1">
                   {viewingTask && viewingTask._id === task._id ? (
                     <div>
@@ -316,31 +316,31 @@ const TaskList = ({ refresh }) => {
                     </div>
                   )}
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-3 md:mt-0">
                   {!viewingTask || viewingTask._id !== task._id ? (
                     <button
                       onClick={() => handleViewClick(task)}
-                      className="btn btn-sm btn-info text-white"
+                      className="btn btn-sm btn-info text-white w-full md:w-auto"
                     >
                       View
                     </button>
                   ) : (
                     <button
                       onClick={handleCloseView}
-                      className="btn btn-sm btn-info text-white"
+                      className="btn btn-sm btn-info text-white w-full md:w-auto"
                     >
                       Collapse
                     </button>
                   )}
                   <button
                     onClick={() => handleEditClick(task)}
-                    className="btn btn-sm btn-success text-white"
+                    className="btn btn-sm btn-success text-white w-full md:w-auto"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(task._id)}
-                    className="btn btn-sm btn-error text-white"
+                    className="btn btn-sm btn-error text-white w-full md:w-auto"
                   >
                     Delete
                   </button>
