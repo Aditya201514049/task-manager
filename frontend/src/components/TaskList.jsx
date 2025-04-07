@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { getTasks, deleteTask, updateTask } from "../services/taskService";
 import dayjs from "dayjs";
 
@@ -7,6 +7,7 @@ const TaskList = ({ refresh }) => {
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [filterStatus, setFilterStatus] = useState("all");
   const [sortOrder, setSortOrder] = useState("none");
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [editingTask, setEditingTask] = useState(null);
@@ -17,6 +18,37 @@ const TaskList = ({ refresh }) => {
   const [updatedStatus, setUpdatedStatus] = useState("");
   const [updatedDueDate, setUpdatedDueDate] = useState("");
   const [updatedPriority, setUpdatedPriority] = useState("");
+
+  const getPriorityValue = (priority) => {
+    switch (priority) {
+      case "low":
+        return 1;
+      case "medium":
+        return 2;
+      case "high":
+        return 3;
+      default:
+        return 2;
+    }
+  };
+
+  const applyFilterSortAndSearch = useCallback((status, order, query, taskList) => {
+    let filtered = status === "all" ? taskList : taskList.filter((task) => task.status === status);
+    
+    if (query.trim() !== "") {
+      filtered = filtered.filter((task) => 
+        task.title.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+
+    if (order === "low-to-high") {
+      filtered.sort((a, b) => getPriorityValue(a.priority) - getPriorityValue(b.priority));
+    } else if (order === "high-to-low") {
+      filtered.sort((a, b) => getPriorityValue(b.priority) - getPriorityValue(a.priority));
+    }
+
+    setFilteredTasks(filtered);
+  }, []);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -37,12 +69,15 @@ const TaskList = ({ refresh }) => {
     fetchTasks();
   }, [refresh]);
 
+  useEffect(() => {
+    applyFilterSortAndSearch(filterStatus, sortOrder, searchQuery, tasks);
+  }, [filterStatus, sortOrder, searchQuery, tasks, applyFilterSortAndSearch]);
+
   const handleDelete = async (taskId) => {
     try {
       await deleteTask(taskId);
       const updatedTasks = tasks.filter((task) => task._id !== taskId);
       setTasks(updatedTasks);
-      applyFilterAndSort(filterStatus, sortOrder, updatedTasks);
     } catch (error) {
       console.error("Error deleting task:", error);
       setError("Error deleting task. Please try again.");
@@ -78,7 +113,6 @@ const TaskList = ({ refresh }) => {
       );
 
       setTasks(updatedTasks);
-      applyFilterAndSort(filterStatus, sortOrder, updatedTasks);
       setEditingTask(null);
     } catch (error) {
       console.error("Error updating task:", error);
@@ -86,41 +120,14 @@ const TaskList = ({ refresh }) => {
     }
   };
 
-  const applyFilterAndSort = (status, order, taskList) => {
-    let filtered = status === "all" ? taskList : taskList.filter((task) => task.status === status);
-
-    if (order === "low-to-high") {
-      filtered.sort((a, b) => getPriorityValue(a.priority) - getPriorityValue(b.priority));
-    } else if (order === "high-to-low") {
-      filtered.sort((a, b) => getPriorityValue(b.priority) - getPriorityValue(a.priority));
-    }
-
-    setFilteredTasks(filtered);
-  };
-
-  const getPriorityValue = (priority) => {
-    switch (priority) {
-      case "low":
-        return 1;
-      case "medium":
-        return 2;
-      case "high":
-        return 3;
-      default:
-        return 2;
-    }
-  };
-
   const handleFilterChange = (e) => {
     const status = e.target.value;
     setFilterStatus(status);
-    applyFilterAndSort(status, sortOrder, tasks);
   };
 
   const toggleSortOrder = () => {
     const newOrder = sortOrder === "low-to-high" ? "high-to-low" : "low-to-high";
     setSortOrder(newOrder);
-    applyFilterAndSort(filterStatus, newOrder, tasks);
   };
 
   const handleViewClick = (task) => {
@@ -131,6 +138,10 @@ const TaskList = ({ refresh }) => {
     setViewingTask(null);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   if (loading) return <p className="text-blue-500 dark:text-blue-400">Loading tasks...</p>;
   if (error) return <p className="text-red-500 dark:text-red-400">{error}</p>;
 
@@ -139,12 +150,28 @@ const TaskList = ({ refresh }) => {
     <div className="bg-blue-50 dark:bg-gray-800 shadow-lg rounded-2xl p-6 max-w-4xl mx-auto mt-10 transition-colors duration-200">
       <h2 className="text-3xl font-extrabold text-purple-800 dark:text-purple-400 mb-6 text-center transition-colors duration-200">Task List</h2>
 
-      {/* Filter and Sort */}
-      <div className="mb-6 flex justify-between items-center">
+      <div className="mb-4">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search tasks by title..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="w-full px-4 py-2 pl-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors duration-200"
+          />
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg className="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
         <select
           value={filterStatus}
           onChange={handleFilterChange}
-          className="select select-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200"
+          className="select select-bordered bg-white dark:bg-gray-700 text-gray-800 dark:text-white transition-colors duration-200 w-full sm:w-auto"
         >
           <option value="all">All</option>
           <option value="pending">Pending</option>
@@ -153,7 +180,7 @@ const TaskList = ({ refresh }) => {
         </select>
         <button
           onClick={toggleSortOrder}
-          className="btn btn-primary"
+          className="btn btn-primary w-full sm:w-auto"
         >
           Priority ({sortOrder === "low-to-high" ? "Low to High" : "High to Low"})
         </button>
@@ -349,7 +376,11 @@ const TaskList = ({ refresh }) => {
             </li>
           ))
         ) : (
-          <p className="text-center text-gray-500 dark:text-gray-400 py-4 transition-colors duration-200">No tasks found. Try changing filters or add a new task.</p>
+          <p className="text-center text-gray-500 dark:text-gray-400 py-4 transition-colors duration-200">
+            {searchQuery.trim() !== "" 
+              ? `No tasks found matching "${searchQuery}". Try a different search term.` 
+              : "No tasks found. Try changing filters or add a new task."}
+          </p>
         )}
       </ul>
     </div>
