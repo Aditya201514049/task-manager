@@ -26,7 +26,6 @@ const App = () => {
     if (storedToken) {
       setToken(storedToken);
       setIsLoggedIn(true);
-      
       // Fetch user data using the token
       const fetchUser = async () => {
         try {
@@ -134,4 +133,5 @@ const AppWrapper = () => {
 };
 
 export default AppWrapper;
+//main app component
 
