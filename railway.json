@@ -1,9 +1,15 @@
 {
-    "build": {
-      "builder": "NIXPACKS",
-      "nixpacksConfig": {
-        "workdir": "backend"
-      }
+  "build": {
+    "builder": "NIXPACKS",
+    "nixpacksConfig": {
+      "workdir": "backend",
+      "build": "npm install",
+      "start": "npm start"
+    }
+  },
+  "deploy": {
+    "env": {
+      "PORT": "5000"  
     }
   }
-  
+}
