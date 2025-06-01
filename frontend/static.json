@@ -1,30 +1,24 @@
 {
-    "redirects": [
-      {
-        "source": "/login",
-        "destination": "/login",
-        "status": 200
-      },
-      {
-        "source": "/register",
-        "destination": "/register",
-        "status": 200
-      },
-      {
-        "source": "/tasks",
-        "destination": "/tasks",
-        "status": 200
-      },
-      {
-        "source": "/",
-        "destination": "/",
-        "status": 200
-      },
-      {
-        "source": "/*",
-        "destination": "/index.html",
-        "status": 200
-      }
-    ]
+  "root": "build/",
+  "clean_urls": true,
+  "routes": {
+    "/": "index.html",
+    "/login": "index.html",
+    "/register": "index.html",
+    "/tasks": "index.html",
+    "/profile": "index.html",
+    "/about": "index.html",
+    "/faqs": "index.html",
+    "/terms": "index.html",
+    "/privacy": "index.html"
+  },
+  "routes_precedence": [
+    "/api/*"
+  ],
+  "error_page": "index.html",
+  "headers": {
+    "/**": {
+      "Cache-Control": "public, max-age=0, must-revalidate"
+    }
   }
-  
+}
