@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Footer from "./components/Footer";
 import TaskForm from "./components/TaskForm";
@@ -18,8 +18,10 @@ const App = () => {
   const [user, setUser] = useState(null); // Store logged-in user data
   const [taskListKey, setTaskListKey] = useState(0); // Key to force TaskList re-render
   const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   const navigate = useNavigate(); // Use navigate instead of window.location.href
+  const location = useLocation(); // Get current location
 
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
@@ -44,12 +46,25 @@ const App = () => {
           console.error("Error fetching user data:", error);
           // If there's an error, log the user out
           handleLogout();
+        } finally {
+          setIsLoading(false); // Set loading to false when done
         }
       };
       
       fetchUser();
+    } else {
+      setIsLoading(false); // Also set loading to false if no token
     }
   }, []); // Only run once on component mount
+  
+  // Effect to handle persistence of protected routes after refresh
+  useEffect(() => {
+    if (!isLoading && isLoggedIn) {
+      // Get the current path and store it for after login
+      const currentPath = location.pathname;
+      localStorage.setItem('lastPath', currentPath);
+    }
+  }, [location.pathname, isLoggedIn, isLoading]);
 
   // Refresh the task list when a task is added
   const handleSave = () => {
@@ -62,6 +77,15 @@ const App = () => {
     setUser(null); // Clear user data
     localStorage.removeItem("authToken"); // Clear token (if stored)
   };
+
+  // If loading, show a loading indicator
+  if (isLoading) {
+    return (
+      <div className="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col items-center justify-center">
+        <div className="text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-200">
@@ -98,7 +122,21 @@ const App = () => {
             <>
               <Route
                 path="/login"
-                element={<LoginForm setIsLoggedIn={setIsLoggedIn} setUser={setUser} />}
+                element={
+                  <LoginForm 
+                    setIsLoggedIn={setIsLoggedIn} 
+                    setUser={setUser} 
+                    onLoginSuccess={() => {
+                      // Restore last path after login if available
+                      const lastPath = localStorage.getItem('lastPath');
+                      if (lastPath && ['/tasks', '/profile'].includes(lastPath)) {
+                        navigate(lastPath);
+                      } else {
+                        navigate('/');
+                      }
+                    }}
+                  />
+                }
               />
               <Route
                 path="/register"

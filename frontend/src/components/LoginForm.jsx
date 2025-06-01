@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../utils/authUtils";
 import { Link } from "react-router-dom";
 
-const LoginForm = ({ setIsLoggedIn, setUser }) => {
+const LoginForm = ({ setIsLoggedIn, setUser, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +20,13 @@ const LoginForm = ({ setIsLoggedIn, setUser }) => {
       if (userData) {
         setUser(userData); // Update user state in App.js
         setIsLoggedIn(true); // Update parent state
-        navigate("/"); // Redirect to TaskForm page
+        
+        // Use the callback if provided, otherwise fallback to direct navigation
+        if (onLoginSuccess) {
+          onLoginSuccess();
+        } else {
+          navigate("/"); // Default redirect to TaskForm page
+        }
       }
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
